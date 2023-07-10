@@ -1,5 +1,6 @@
 <?php 
-    require('local_setting.php');
+    require('./local_setting.php');
+    
     $username = $_POST['username'];
     $password = $_POST['password'];
     $Fname = $_POST['Fname'];
@@ -9,16 +10,24 @@
     $email = $_POST['email'];
     $DOB = $_POST['DOB'];
     $Address = $_POST['Address'];
+    $Account_type = $_POST['Account_type'];
 
-    $createUserData ="INSERT INTO user VALUES('','$username','$password','$email')";
+    $createUserData = "INSERT INTO user VALUES(NULL, '$username', '$password', '$email', '$Account_type')";
     $resultfromUser = mysqli_query($conn, $createUserData);
+
+    $lastInsertedID = mysqli_insert_id($conn);
+
+    if ($Account_type == '2') {
+        $createMusician = "INSERT INTO musician VALUES(NULL, '$lastInsertedID')";
+        $resultfromMusician = mysqli_query($conn, $createMusician);
+    } 
+    else {
+        // Handle other account types if needed
+    }
+
+    $createUserDetailsData = "INSERT INTO user_details VALUES('$lastInsertedID', '$Fname', '$Mname', '$Lname', '$Gender', '$DOB', '$Address')";
+    $resultfromUserDetails = mysqli_query($conn, $createUserDetailsData);
     
-    $lastinsertedID = mysqli_insert_id($conn);
-
-    $createUserDetailsData = "INSERT INTO user_details VALUES('$lastinsertedID','$Fname','$Mname','$Lname','$Gender','$DOB','$Address')";
-    $resultfromUserDetails=mysqli_query($conn, $createUserDetailsData);
-
-    header('location:../dashboard.php?user_id='.$lastinsertedID);
-
-
+    echo 'Data added successfully.';
+    header('location:authentication.php');
 ?>
