@@ -12,13 +12,13 @@
     $Address = $_POST['Address'];
     $Account_type = $_POST['Account_type'];
 
-    $createUserData = "INSERT INTO user VALUES(NULL, '$username', '$password', '$email', '$Account_type')";
+    $createUserData = "INSERT INTO user VALUES('', '$username', '$password', '$email', '$Account_type','')";
     $resultfromUser = mysqli_query($conn, $createUserData);
 
     $lastInsertedID = mysqli_insert_id($conn);
 
     if ($Account_type == '2') {
-        $createMusician = "INSERT INTO musician VALUES(NULL, '$lastInsertedID')";
+        $createMusician = "INSERT INTO musician VALUES('', '$lastInsertedID','','','','')";
         $resultfromMusician = mysqli_query($conn, $createMusician);
     } 
     else {
@@ -29,5 +29,5 @@
     $resultfromUserDetails = mysqli_query($conn, $createUserDetailsData);
     
     echo 'Data added successfully.';
-    header('location:authentication.php');
+    header('location:../dashboard.php');
 ?>
